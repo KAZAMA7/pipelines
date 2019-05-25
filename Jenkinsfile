@@ -1,21 +1,18 @@
 pipeline{
-    agent { label 'linux' }
-    tools { maven 'M3' }
+    agent none
     stages{
-       stage('checkout'){
+       stage('example build'){
+          agent{ docker 'maven:3-alpine'}
           steps{
-             git 'https://github.com/effectivejenkins/myProject.git'
+             echo 'Hello maven'
+             sh 'mvn --version'
              }
            }
-       stage('Build'){
+       stage('Example test'){
+          agent { docker 'openjdk:8-jre' }
           steps{
-            sh 'mvn clean compile'
+            sh 'java -version'
             }
           }
-        stage('package'){
-           steps{
-             sh 'mvn package'
-           }
-             }        
  }        
 }
